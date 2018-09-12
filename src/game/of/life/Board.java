@@ -17,8 +17,8 @@ import java.util.*;
  * @author Matt
  */
 public class Board {
-    private ArrayList <ArrayList<Boolean>> rows;
-    private ArrayList <Boolean> cols;
+    private ArrayList <ArrayList<Integer>> rows;
+    private ArrayList <Integer> cols;
     private int size;
     private int buffer;
     int fullBoardSize;
@@ -39,10 +39,10 @@ public class Board {
         
         rows = new ArrayList<>();
         for (int row = 0; row < fullBoardSize; row++) {
-            cols = new ArrayList<Boolean>();
+            cols = new ArrayList<Integer>();
             
             for (int col = 0; col < fullBoardSize; col++) {
-                cols.add(false);
+                cols.add(0);
             }
             rows.add(cols);
         }
@@ -67,7 +67,7 @@ public class Board {
 //        int s = color.nextInt(255)+1;
 //        int b = color.nextInt(255)+1;
 
-        g.setColor(Color.getHSBColor(hue/255.0f, 1f, 1f));
+        //g.setColor(Color.getHSBColor(hue/255.0f, 1f, 1f));
         
         
         
@@ -75,7 +75,8 @@ public class Board {
             for (int j = 0; j < size; j++) {
                 
                 //g.drawRect(50 + 3 * j, 50 + 3 * i, 3, 3);
-                if(getCellState(i,j)){
+                if(getCellState(i,j) > 0){
+                    g.setColor(Color.getHSBColor(getCellState(i,j)/255.0f ,1.0f,1.0f ));
                     g.fillRect(50 + j, 50 + i, 1 , 1);
                 }
             }
@@ -106,7 +107,7 @@ public class Board {
         
     }
     
-    public void setCell(boolean state,int vx, int vy){
+    public void setCell(int state,int vx, int vy){
         int x = vx + buffer;
         int y = vy + buffer;
         
@@ -115,7 +116,7 @@ public class Board {
     }    
     
     
-    public boolean getCellState(int vx, int vy){
+    public int getCellState(int vx, int vy){
         int x = vx + buffer;
         int y = vy + buffer;
         
@@ -126,19 +127,21 @@ public class Board {
     
     
     public void setFreshBoard(){
-        int num;
+ //       int num;
+        
         Random rand = new Random();
+        
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
-               num = rand.nextInt(2) + 1;
-               if(num % 2 == 0){
-                   setCell(true,col,row);
-               }
+ //              num = rand.nextInt(2) + 1;
+//               if(num % 2 == 0){
+//                   setCell(1,col,row);
+//               }
                
-//               if(col % 2 == 0){
-//                   
-//                   setCell(true,col,row);
-//               } 
+               if(col % 2 == 0){
+                   
+                   setCell(1,col,row);
+               } 
             }
    
              
@@ -147,11 +150,13 @@ public class Board {
     }
    
     
-    public boolean liveOrDie(int vx, int vy){
+    public Boolean liveOrDie(int vx, int vy){
 
         
         
-        boolean live = getCellState(vx,vy);
+        int state = getCellState(vx,vy);
+        
+        
         int surrounding = 0;
             for (int i = -1; i <= 1; i++) {
                 for (int j = -1; j <= 1; j++) {
@@ -159,7 +164,7 @@ public class Board {
                         continue;
                     }   
                      
-                    if (getCellState(vx + i, vy + j) == true) {
+                    if (getCellState(vx + i, vy + j) > 0) {
                         surrounding++;
                     } 
                 }
@@ -167,17 +172,14 @@ public class Board {
         
 
         if(surrounding < 2 || surrounding > 3 ){
-            live = false;
-            return live;
+            return false;
         }
         
-        if(live == false && surrounding == 3){
-            live = true;
-            return live;
+        if(state == 0 && surrounding == 3){
+            return true;
         }
         
-        
-        return live;
+        return state > 0;
     }
     
     

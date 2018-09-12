@@ -52,9 +52,9 @@ public class GameOfLife extends javax.swing.JFrame {
         int count = 0;
         
         while (true) {
-            if(count >= 255){
-                count = 0;
-            }
+//            if(count >= 255){
+//                count = 0;
+//            }
             
             updateBoard();
             NextBoard.printBoard(g, frame.getHeight(), frame.getWidth(), count);
@@ -96,10 +96,19 @@ public class GameOfLife extends javax.swing.JFrame {
     public void updateBoard() {
         for (int row = 0; row < SIZE; row++) {
             for (int col = 0; col < SIZE; col++) {
-                boolean toLive = CurrentBoard.liveOrDie(col, row);
-                NextBoard.setCell(toLive, col, row);
-
-            }
+                
+                int currentVal = CurrentBoard.getCellState(col, row);
+                Boolean toLive = CurrentBoard.liveOrDie(col, row);
+                
+                if (toLive == true){
+                    if (currentVal < 230)
+                        currentVal++;
+                } else {
+                    currentVal = 0;
+                }
+                
+                NextBoard.setCell(currentVal, col, row);
+           }
         }
 
     }
