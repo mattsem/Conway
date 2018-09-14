@@ -101,7 +101,7 @@ public class GameOfLife extends javax.swing.JFrame {
                 Boolean toLive = CurrentBoard.liveOrDie(col, row);
                 
                 if (toLive == true){
-                    if (currentVal < 230)
+                  if (currentVal < 230)
                         currentVal++;
                 } else {
                     currentVal = 0;

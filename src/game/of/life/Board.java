@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import java.util.*;
+import javafx.util.Pair;
 
 /**
  *
@@ -127,25 +128,49 @@ public class Board {
     
     
     public void setFreshBoard(){
- //       int num;
-        
+       randomLoad();
+//      alternateLoad();
+     //   gliders();
+    }
+    
+    public void randomLoad(){
+        int num;
         Random rand = new Random();
         
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
- //              num = rand.nextInt(2) + 1;
-//               if(num % 2 == 0){
-//                   setCell(1,col,row);
-//               }
-               
-               if(col % 2 == 0){
+                num = rand.nextInt(2)+ 1;
+                
+                if(num % 2 == 0){
+                    setCell(1,col,row);
+                }
+                
+            }
+        }
+        
+    }
+    
+    public void alternateLoad(){
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                if(col % 2 == 0){
                    
                    setCell(1,col,row);
-               } 
-            }
-   
-             
+                } 
+            }  
         }
+    }
+    static final int[] GUN_POINTS_X = {
+        1,1,2,2,11,11,11,12,12,13,13,14,14,15,16,16,17,17,17,18,21,21,21,22,22,22,23,23,25,25,25,25,35,35,36,36
+    };
+    static final int[] GUN_POINTS_Y = {
+        5,6,5,6,6,7,8,4,9,3,10,3,10,6,4,8,5,6,7,6,3,4,5,3,4,5,2,6,1,2,6,7,3,4,3,4
+    };
+    public void gliders(){
+        for (int i = 0; i < GUN_POINTS_Y.length; i++) {
+            setCell(1,GUN_POINTS_X[i] + 100 * buffer,GUN_POINTS_Y[i] + 100 * buffer);
+        }
+        
         
     }
    
